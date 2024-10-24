@@ -17,6 +17,14 @@ services:
           memory: 8M
         limits:
           memory: 16M
+      update_config:
+        order: start-first
+        monitor: 5s
+        failure_action: rollback
+      rollback_config:
+        order: start-first
+        monitor: 5s
+        
 networks:
   public:
     external: true
