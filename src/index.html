@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Telegram бот для уведомлений об отключениях в Красноярске | Диспетчерская служба</title>
+    <meta name="keywords"
+        content="Telegram бот Красноярск, уведомления об отключениях Красноярск, диспетчерская служба 005 Красноярск, плановые отключения, аварийные отключения" />
+    <meta name="description"
+        content="Подключитесь к неофициальному Telegram-боту диспетчерской службы Красноярска. Получайте уведомления о плановых и аварийных отключениях электричества, отопления и воды.">
+    <link rel="icon" type="image/png" href="/images/favicon-48x48.png" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="005 Бот" />
+    <link rel="manifest" href="/images/site.webmanifest" />
+    <script type="application/ld+json">
+            {
+               "@context": "https://schema.org",
+               "@type": "Service",
+               "name": "Telegram бот диспетчерской службы Красноярска",
+               "description": "Получайте уведомления о плановых и аварийных отключениях электричества, отопления и воды в Красноярске через Telegram-бота.",
+               "provider": {
+                 "@type": "Organization",
+                 "name": "Центральная диспетчерская служба Красноярска",
+                 "url": "http://005красноярск.рф/"
+               },
+               "areaServed": {
+                 "@type": "Place",
+                 "name": "Красноярск"
+               },
+               "url": "https://005бот.рф"
+            }
+    </script>
+    <style>
+        :root {
+            --primary: #2b5278;
+            --accent: #e85d3d;
+            --bg: #f5f5f5;
+            --text: #333;
+            --gray: #4A4A4A;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .feature svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            fill: var(--primary);
+        }
+
+        .cta {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .cta:hover {
+            transform: translateY(-2px);
+        }
+
+        .street-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .street-form h3 {
+            color: var(--text);
+            margin-top: 0;
+        }
+
+        .street-form input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: 2px solid #ddd;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .street-form input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .street-form button,
+        .btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .street-form button:hover {
+            background: #3a6796;
+        }
+
+        footer {
+            background: var(--gray);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .steps {
+            counter-reset: step;
+            margin: 3rem 0;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            width: 2rem;
+            height: 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 3rem 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero">
+        <img src="/images/logo.png" alt="Иконка Telegram-бота диспетчерской службы Красноярска" class="logo"
+            loading="lazy">
+        <h1>Диспетчерская служба Красноярска в вашем кармане!</h1>
+        <p>Получайте мгновенные уведомления о плановых и аварийных отключениях в Telegram</p>
+
+        <a id="connectBtn"></a>
+        <div class="street-form">
+            <h3>Укажите вашу улицу</h3>
+            <form id="streetForm" onsubmit="return generateBotLink(event)">
+                <input type="text" id="streetInput" placeholder="Например: Красноярский рабочий" required>
+                <button type="submit">Подключить уведомления</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="features">
+            <div class="feature">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+                </svg>
+                <h3>Электричество</h3>
+                <p>Оперативные уведомления о плановых и аварийных отключениях электроэнергии</p>
+            </div>
+
+            <div class="feature">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12,20A6,6 0 0,1 6,14C6,10 12,3.25 12,3.25C12,3.25 18,10 18,14A6,6 0 0,1 12,20Z" />
+                </svg>
+                <h3>Водоснабжение</h3>
+                <p>Информация об отключениях горячей и холодной воды в вашем районе</p>
+            </div>
+
+            <div class="feature">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12,6V9L16,5L12,1V4A8,8 0 0,0 4,12C4,13.57 4.46,15.03 5.24,16.26L6.7,14.8C6.25,13.97 6,13 6,12A6,6 0 0,1 12,6M18.76,7.74L17.3,9.2C17.74,10.04 18,11 18,12A6,6 0 0,1 12,18V15L8,19L12,23V20A8,8 0 0,0 20,12C20,10.43 19.54,8.97 18.76,7.74Z" />
+                </svg>
+                <h3>Отопление</h3>
+                <p>Следите за статусом теплоснабжения и плановыми работами</p>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>Как это работает?</h3>
+                <div class="steps">
+                    <div class="step">Перейдите по ссылке: <a
+                            href="https://t.me/dispkrsk_bot">https://t.me/dispkrsk_bot</a></div>
+                    <div class="step">Нажмите "Старт" для активации уведомлений.</div>
+                    <div class="step">Получайте информацию о статусе коммунальных услуг в режиме реального времени!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Бот использует данные Центральной диспетчерской службы города Красноярска</p>
+            <p><a href="https://005красноярск.рф/" style="color: white">Официальный сайт ЦДС</a></p>
+            <div style="margin-top: 2rem">
+                <a href="#connectBtn" class="cta">Подключить бота</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function bytesToBase64(bytes) {
+            const binString = Array.from(bytes, (byte) =>
+                String.fromCodePoint(byte),
+            ).join("");
+            return btoa(binString);
+        }
+
+        function generateBotLink(event) {
+            event.preventDefault();
+
+            const streetName = document.getElementById('streetInput').value.trim();
+            if (!streetName) return false;
+
+            // Конвертируем байты в base64
+            const base64String = bytesToBase64(new TextEncoder().encode(streetName));
+
+            // Формируем ссылку на бота с параметром start
+            const botUrl = `https://t.me/dispkrsk_bot?start=${base64String}`;
+
+            // Открываем ссылку в новом окне
+            window.open(botUrl, '_blank');
+
+            return false;
+        }
+    </script>
+
+</body>
+
+</html>
